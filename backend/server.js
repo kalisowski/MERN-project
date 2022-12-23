@@ -13,5 +13,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/cocktails', require('./routes/cocktailsRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
+
 app.use(errorHandler);
+
 app.listen(port, () => console.log(`Server running on port ${port}`));
