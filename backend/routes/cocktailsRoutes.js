@@ -5,9 +5,14 @@ const {
   setCocktail,
   updateCocktail,
   deleteCocktail,
+  findCocktail,
 } = require('../controllers/cocktailsController');
 
 router.route('/').get(getCocktails).post(setCocktail);
-router.route('/:id').put(updateCocktail).delete(deleteCocktail);
+router
+  .route('/:id')
+  .get(findCocktail)
+  .put(updateCocktail)
+  .delete(deleteCocktail);
 
 module.exports = router;
