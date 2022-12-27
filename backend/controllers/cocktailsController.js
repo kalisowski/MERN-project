@@ -10,10 +10,15 @@ const getCocktails = asyncHandler(async (req, res) => {
 const setCocktail = asyncHandler(async (req, res) => {
   if (!req.body.name) {
     res.status(400);
-    throw new Error('No body!');
+    throw new Error('No name!');
   }
   const cocktail = await Cocktail.create({
     name: req.body.name,
+    image: req.body.image,
+    ingredients: req.body.ingredients,
+    instructions: req.body.instructions,
+    category: req.body.category,
+    glass: req.body.glass,
   });
   res.status(200).json(cocktail);
 });
@@ -44,9 +49,19 @@ const deleteCocktail = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Koktajl usunięty' });
 });
 
+const findCocktail = asyncHandler(async (req, res) => {
+  const cocktail = await Cocktail.findById(req.params.id);
+  if (!cocktail) {
+    res.status(404);
+    throw new Error('Nie ma takiego koktajlu');
+  }
+  res.status(200).json(cocktail);
+});
+
 module.exports = {
   getCocktails,
   setCocktail,
   updateCocktail,
   deleteCocktail,
+  findCocktail,
 };
