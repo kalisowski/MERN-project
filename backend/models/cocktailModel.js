@@ -28,6 +28,24 @@ const cocktailSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add an image'],
   },
+  comments: {
+    _id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+    text: {
+      type: String,
+      required: [true, 'Please add a comment'],
+    },
+    author: {
+      type: String,
+      required: [true, 'Please add an author of the comment'],
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
 });
 
 module.exports = mongoose.model('Cocktail', cocktailSchema);
