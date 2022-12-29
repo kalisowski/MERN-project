@@ -1,17 +1,43 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchSvg from './assets/Search.jsx';
-function NavBar() {
+import _ from 'underscore';
+
+function NavBar(props) {
+  const { updateCocktails } = props;
   const [search, setSearch] = useState('');
 
-  const handleSearch = (e) => {
-    console.log(search);
+  const debouncedSearch = _.debounce(async (controller) => {
+    try {
+      const url = `${process.env.REACT_APP_API_COCKTAILS}search?name=${search}`;
+      const res = await fetch(url, {
+        signal: controller.signal,
+      });
+      const data = await res.json();
+      updateCocktails(data);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') console.log(error);
+    }
+  }, 500);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    debouncedSearch(abortController);
+    return () => {
+      abortController.abort();
+    };
+    // eslint disable next line is used to disable the warning that useEffect is missing a dependency
+    //eslint-disable-next-line
+  }, [search]);
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
+  const handleSearch = async (event) => {
+    event.preventDefault();
     setSearch('');
   };
 
-  const handleSeachChange = (e) => {
-    setSearch(e.target.value);
-  };
   return (
     <div className="navbar bg-primary flex-none flex-wrap">
       <div className="flex-1">
@@ -24,7 +50,7 @@ function NavBar() {
           type="text"
           placeholder="Search"
           className="form-control flex-auto input input-bordered min-w-0"
-          onChange={handleSeachChange}
+          onChange={handleSearchChange}
           value={search}
         />
         <button
