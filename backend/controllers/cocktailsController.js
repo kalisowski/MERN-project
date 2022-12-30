@@ -55,7 +55,6 @@ const findCocktail = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error('Nie ma takiego koktajlu');
   }
-  console;
   res.status(200).json(cocktail);
 });
 
