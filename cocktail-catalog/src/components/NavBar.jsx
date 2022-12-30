@@ -17,7 +17,7 @@ function NavBar(props) {
     } catch (error) {
       if (process.env.NODE_ENV === 'development') console.log(error);
     }
-  }, 500);
+  }, 1000);
 
   useEffect(() => {
     const abortController = new AbortController();
