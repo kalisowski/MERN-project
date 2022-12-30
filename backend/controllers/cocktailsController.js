@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const Cocktail = require('../models/cocktailModel');
 
 const getCocktails = asyncHandler(async (req, res) => {
-  const cocktails = await Cocktail.find({});
+  const cocktails = await Cocktail.find({}).sort({ name: 1 });
   res.status(200).json({ cocktails });
 });
 
@@ -61,7 +61,9 @@ const findCocktail = asyncHandler(async (req, res) => {
 const findCocktailByName = asyncHandler(async (req, res) => {
   const name = req.query.name;
 
-  const cocktail = await Cocktail.find({ name: { $regex: name } });
+  const cocktail = await Cocktail.find({ name: { $regex: name } }).sort({
+    name: 1,
+  });
   if (!cocktail) {
     res.status(404);
     throw new Error('Nie ma takiego koktajlu');
