@@ -35,19 +35,25 @@ function Home() {
   return (
     <div>
       <NavBar updateCocktails={updateCocktails} getCocktails={getCocktails} />
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10 m-10 justify-self-center justify-items-center">
-        {cocktails.map((cocktail) => {
-          return (
-            <Card
-              key={cocktail._id}
-              id={cocktail._id}
-              name={cocktail.name}
-              image={cocktail.image}
-              category={cocktail.category}
-            />
-          );
-        })}
-      </div>
+      {cocktails.length === 0 ? (
+        <div className="flex items-center justify-center h-screen text-3xl font-bold">
+          There are no cocktails to display
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10 m-10 justify-self-center justify-items-center">
+          {cocktails.map((cocktail) => {
+            return (
+              <Card
+                key={cocktail._id}
+                id={cocktail._id}
+                name={cocktail.name}
+                image={cocktail.image}
+                category={cocktail.category}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
