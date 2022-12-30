@@ -1,6 +1,28 @@
 const asyncHandler = require('express-async-handler');
-
+const multer = require('multer');
 const Cocktail = require('../models/cocktailModel');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'backend/uploads');
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname
+    );
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 const getCocktails = asyncHandler(async (req, res) => {
   const cocktails = await Cocktail.find({}).sort({ name: 1 });
@@ -8,13 +30,10 @@ const getCocktails = asyncHandler(async (req, res) => {
 });
 
 const setCocktail = asyncHandler(async (req, res) => {
-  if (!req.body.name) {
-    res.status(400);
-    throw new Error('No name!');
-  }
   const cocktail = await Cocktail.create({
     name: req.body.name,
-    image: req.body.image,
+    image:
+      req.protocol + '://' + req.get('host') + '/uploads/' + req.file.filename,
     ingredients: req.body.ingredients,
     instructions: req.body.instructions,
     category: req.body.category,
@@ -96,4 +115,5 @@ module.exports = {
   countAlcoholicCocktails,
   countNonAlcoholicCocktails,
   countCocktails,
+  upload,
 };
