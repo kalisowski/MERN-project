@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 
@@ -7,15 +7,13 @@ function CocktailInfo() {
   const { id } = useParams();
 
   const getCocktail = () => {
-    const url = `${process.env.REACT_APP_API_COCKTAILS}/${id}`;
+    const url = `${process.env.REACT_APP_API_COCKTAILS}/cocktail/${id}`;
     axios.get(url).then((res) => {
       setCocktail(res.data);
-      console.log(res.data);
     });
   };
-  useEffect(() => {
-    getCocktail();
-  }, []);
+
+  getCocktail();
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
