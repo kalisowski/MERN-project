@@ -16,6 +16,7 @@ app.use(cors());
 
 app.use('/api/cocktails', require('./routes/cocktailsRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/comments', require('./routes/commentsRoutes'));
 
 app.use(errorHandler);
 
