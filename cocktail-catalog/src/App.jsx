@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
-import CocktailInfo from './components/shared/CocktailInfo';
+import CocktailInfo from './pages/CocktailInfo';
 import AdminPage from './pages/AdminPage';
 
 function App() {
