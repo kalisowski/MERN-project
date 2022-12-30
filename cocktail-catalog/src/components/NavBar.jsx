@@ -3,10 +3,11 @@ import SearchSvg from './assets/Search.jsx';
 import _ from 'underscore';
 
 function NavBar(props) {
-  const { updateCocktails } = props;
+  const { updateCocktails, updateLoadingState } = props;
   const [search, setSearch] = useState('');
 
   const debouncedSearch = _.debounce(async (controller) => {
+    updateLoadingState(true);
     try {
       const url = `${process.env.REACT_APP_API_COCKTAILS}search?name=${search}`;
       const res = await fetch(url, {
@@ -17,7 +18,8 @@ function NavBar(props) {
     } catch (error) {
       if (process.env.NODE_ENV === 'development') console.log(error);
     }
-  }, 1000);
+    updateLoadingState(false);
+  }, 500);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -25,7 +27,6 @@ function NavBar(props) {
     return () => {
       abortController.abort();
     };
-    // eslint disable next line is used to disable the warning that useEffect is missing a dependency
     //eslint-disable-next-line
   }, [search]);
 
