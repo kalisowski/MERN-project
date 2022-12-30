@@ -10,9 +10,10 @@ const {
   countAlcoholicCocktails,
   countNonAlcoholicCocktails,
   countCocktails,
+  upload,
 } = require('../controllers/cocktailsController');
 
-router.route('/').get(getCocktails).post(setCocktail);
+router.route('/').get(getCocktails).post(upload.single('image'), setCocktail);
 router
   .route('/cocktail/:id')
   .get(findCocktail)
