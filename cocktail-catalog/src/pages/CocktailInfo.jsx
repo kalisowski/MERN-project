@@ -22,8 +22,11 @@ function CocktailInfo() {
     });
   };
 
-  getCocktail();
-  getComments();
+  useEffect(() => {
+    getCocktail();
+    getComments();
+    //eslint-disable-next-line
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
