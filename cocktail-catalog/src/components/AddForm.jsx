@@ -125,9 +125,6 @@ function AddForm() {
           </div>
         </form>
       </div>
-      {/* {previewSource && (
-        <img src={previewSource} alt="chosen" style={{ height: '300px' }} />
-      )} */}
     </div>
   );
 }
