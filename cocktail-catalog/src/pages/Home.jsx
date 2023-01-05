@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import Card from '../components/shared/Card';
+import { useSelector, useDispatch } from 'react-redux';
+import { reset } from '../reducers/authSlice';
 
 function Home() {
   const url = `${process.env.REACT_APP_API_COCKTAILS}`;
   const [cocktails, setCocktails] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [admin, setAdmin] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    const adminstate = localStorage.getItem('user');
+    console.log(adminstate);
+    if (adminstate) {
+      setAdmin(true);
+    } else {
+      setAdmin(false);
+    }
+  }, [user]);
 
   const getCocktails = async (controller) => {
     setLoading(true);
@@ -45,6 +59,8 @@ function Home() {
         updateCocktails={updateCocktails}
         getCocktails={getCocktails}
         updateLoadingState={updateLoadingState}
+        main={true}
+        admin={admin}
       />
       {loading ? (
         <div className="flex items-center justify-center h-screen text-3xl font-bold">
