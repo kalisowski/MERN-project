@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginAdmin, reset } from '../reducers/authSlice';
 
 function AdminLogin() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user, loading, error, success, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (error) {
+      toast.error(message);
+    }
+    if (success || user) {
+      navigate('/');
+    }
+
+    dispatch(reset());
+  }, [user, error, success, message, navigate, dispatch]);
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center">
       <h1 className="text-3xl font-bold mb-5 text-primary-content ">
         Admin Page
       </h1>
@@ -24,7 +46,7 @@ function AdminLogin() {
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
+                dispatch(loginAdmin(values));
                 setSubmitting(false);
               }, 400);
             }}
@@ -54,6 +76,7 @@ function AdminLogin() {
                   name="password"
                   component="div"
                 />
+                {loading && <p>Loading...</p>}
                 <button
                   className="btn btn-lg"
                   type="submit"
