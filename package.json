@@ -1,0 +1,35 @@
+{
+  "name": "projektprogramistyczny-kalisowski",
+  "version": "1.0.0",
+  "description": "My first MERN app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm start --prefix cocktail-catalog"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UniversityOfGdanskProjects/projektprogramistyczny-kalisowski.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UniversityOfGdanskProjects/projektprogramistyczny-kalisowski/issues"
+  },
+  "homepage": "https://github.com/UniversityOfGdanskProjects/projektprogramistyczny-kalisowski#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
