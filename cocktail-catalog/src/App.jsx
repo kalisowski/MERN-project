@@ -16,6 +16,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route exact path="/cocktail/:id" element={<CocktailInfo />} />
+          <Route path="/edit/:id" element={<AddPage />} />
           <Route path="/add" element={<AddPage />} />
         </Routes>
       </Router>
