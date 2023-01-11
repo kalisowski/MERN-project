@@ -53,6 +53,7 @@ function EditForm(id) {
             toast.error('Cocktail with given name already exists');
             return;
           }
+          setCocktail(values);
           toast.success('Cocktail modified successfully');
         }
       } catch (error) {
