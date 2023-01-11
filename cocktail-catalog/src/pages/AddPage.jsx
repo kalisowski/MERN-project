@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import AddForm from '../components/AddForm';
-import { useNavigate } from 'react-router-dom';
+import EditForm from '../components/EditForm';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function AddPage() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
 
@@ -17,7 +19,8 @@ function AddPage() {
   return (
     <>
       <div className="flex flex-col items-center justify-center h-screen">
-        <AddForm />
+        {id ? <EditForm id={id} /> : <AddForm />}
+
         <div className="mt-10">
           <Link to="/">
             <button className="btn bg-primary">Take me back!</button>

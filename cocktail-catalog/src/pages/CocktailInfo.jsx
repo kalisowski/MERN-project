@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import AddComment from '../components/AddComment';
 
 function CocktailInfo() {
   const [cocktail, setCocktail] = useState();
   const [comments, setComments] = useState();
-
+  const adminstate = localStorage.getItem('user');
   const { id } = useParams();
+
+  let navigate = useNavigate();
+  const handleClick = (e) => {
+    navigate(`${e}`);
+  };
+
+  useEffect(() => {
+    getCocktail();
+    getComments();
+    //eslint-disable-next-line
+  }, []);
 
   const getCocktail = () => {
     const url = `${process.env.REACT_APP_API_COCKTAILS}cocktail/${id}`;
@@ -22,14 +35,17 @@ function CocktailInfo() {
     });
   };
 
-  useEffect(() => {
-    getCocktail();
-    getComments();
-    //eslint-disable-next-line
-  }, []);
+  //function deleting the comment
+  const deleteComment = async (commentid) => {
+    const url = `${process.env.REACT_APP_API_COMMENTS}` + id + '/' + commentid;
+    axios.delete(url).then((res) => {
+      toast.success('Comment deleted!');
+      setComments(res.data);
+    });
+  };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center">
       {cocktail && (
         <div className="flex items-center">
           <div className="card w-100 bg-primary shadow-xl m-5">
@@ -73,7 +89,34 @@ function CocktailInfo() {
                     </ul>
                   </div>
                 </div>
-                <div className="">
+                <div className="rating rating-lg">
+                  <input
+                    type="radio"
+                    name="rating-8"
+                    className="mask mask-star-2 bg-orange-400"
+                  />
+                  <input
+                    type="radio"
+                    name="rating-8"
+                    className="mask mask-star-2 bg-orange-400"
+                  />
+                  <input
+                    type="radio"
+                    name="rating-8"
+                    className="mask mask-star-2 bg-orange-400"
+                  />
+                  <input
+                    type="radio"
+                    name="rating-8"
+                    className="mask mask-star-2 bg-orange-400"
+                  />
+                  <input
+                    type="radio"
+                    name="rating-8"
+                    className="mask mask-star-2 bg-orange-400"
+                  />
+                </div>
+                <div>
                   <Link to="/">
                     <button className="btn bg-primary">Take me back!</button>
                   </Link>
@@ -83,30 +126,52 @@ function CocktailInfo() {
           </div>
         </div>
       )}
-      <div>
-        {comments && (
-          <div className="flex flex-col h-0 mt-10">
+
+      {comments && (
+        <div className="card flex items-center flex-col w-1/2 bg-neutral mt-10 p-10">
+          <center>
+            <AddComment id={id} setComments={setComments} />
             <h1 className="text-4xl">Comments:</h1>
-            {comments.length === 0 ? (
-              <p>There are no comments yet!</p>
-            ) : (
-              comments.map((comment, id) => {
-                return (
-                  <div className="card w-100 bg-primary shadow-xl m-5" key={id}>
+          </center>
+          {comments.length === 0 ? (
+            <p>There are no comments yet!</p>
+          ) : (
+            comments.map((comment, id) => {
+              return (
+                <div className="flex" key={id}>
+                  <div className="card w-96 bg-primary shadow-xl m-5">
                     <div className="card-body">
-                      <h1 className="card-title text-4xl">
+                      <h1 className="card-title text-xl">
                         Comment: {comment.comment}
                       </h1>
-                      <p className="text-2xl">Author: {comment.author}</p>
-                      <p className="text-2xl">Rating: {comment.rating}</p>
+                      <p className="text-l">Author: {comment.author}</p>
+                      <p className="p-2 text-l bg-neutral">{comment.text}</p>
                     </div>
                   </div>
-                );
-              })
-            )}
-          </div>
-        )}
-      </div>
+                  <div className="h-max ">
+                    {adminstate && (
+                      <div className="flex flex-col mt-5">
+                        <div
+                          className="btn btn-error mt-5"
+                          onClick={() => deleteComment(comment._id)}
+                        >
+                          Delete
+                        </div>
+                        <div
+                          className="btn btn-accent mt-5"
+                          onClick={() => handleClick(comment._id)}
+                        >
+                          Edit
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      )}
     </div>
   );
 }
