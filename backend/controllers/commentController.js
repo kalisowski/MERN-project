@@ -75,14 +75,20 @@ const updateComment = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error('Nie ma takiego komentarza');
   }
-  if (!req.body.text || !req.body.author) {
+  if (!req.body.text && !req.body.author) {
     res.status(400);
-    throw new Error('Nie podano wszystkich danych');
+    throw new Error('Nie podano danych');
   }
   cocktail.comments = cocktail.comments.map((comment) => {
     if (comment._id == req.params.commentId) {
-      comment.text = req.body.text;
-      comment.author = req.body.author;
+      if (req.body.text && !req.body.author) {
+        comment.text = req.body.text;
+      } else if (req.body.author && !req.body.text) {
+        comment.author = req.body.author;
+      } else {
+        comment.text = req.body.text;
+        comment.author = req.body.author;
+      }
     }
     return comment;
   });
