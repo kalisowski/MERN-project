@@ -31,10 +31,10 @@ function AddForm() {
         const response = await axios.post(url, formData);
         if (response.status === 201)
           toast.success('Cocktail added successfully');
-        if (response.status === 200)
-          toast.error('Cocktail with that name already exists');
       } catch (error) {
-        toast.error('Error adding cocktail', error);
+        if (error.response.status === 409)
+          toast.error('Cocktail with that name already exists');
+        else toast.error('Error adding cocktail');
       }
     },
   });
