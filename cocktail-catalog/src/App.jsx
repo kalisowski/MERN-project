@@ -6,6 +6,7 @@ import NotFound from './pages/NotFound';
 import CocktailInfo from './pages/CocktailInfo';
 import AdminPage from './pages/AdminPage';
 import AddPage from './pages/AddPage';
+import CommentEdit from './pages/CommentEdit';
 
 function App() {
   return (
@@ -15,7 +16,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/admin" element={<AdminPage />} />
-          <Route exact path="/cocktail/:id" element={<CocktailInfo />} />
+          <Route path="/cocktail">
+            <Route path=":id">
+              <Route path=":cid" element={<CommentEdit />} />
+              <Route index element={<CocktailInfo />} />
+            </Route>
+          </Route>
           <Route path="/edit/:id" element={<AddPage />} />
           <Route path="/add" element={<AddPage />} />
         </Routes>
