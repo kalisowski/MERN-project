@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 function EditForm(id) {
   const [cocktail, setCocktail] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [formModified, setFormModified] = useState(false);
   const url = process.env.REACT_APP_API_COCKTAILS + 'cocktail/' + id.id;
 
   useEffect(() => {
@@ -29,6 +30,11 @@ function EditForm(id) {
     },
     onSubmit: async (values) => {
       const formData = new FormData();
+      if (formModified === false) {
+        toast.info('No changes made');
+        return;
+      }
+      setFormModified(false);
       for (let value in values) {
         if (value === 'ingredients') {
           values[value].forEach((ingredient) => {
@@ -56,23 +62,46 @@ function EditForm(id) {
     },
   });
 
+  const handleFormChange = (e) => {
+    setFormModified(true);
+    formik.handleChange(e);
+  };
+
   const addIngredient = () => {
     formik.setFieldValue('ingredients', [...formik.values.ingredients, '']);
+    setFormModified(true);
   };
 
   const addInstruction = () => {
     formik.setFieldValue('instructions', [...formik.values.instructions, '']);
+    setFormModified(true);
+  };
+
+  const deleteIngredient = (index) => {
+    const values = [...formik.values.ingredients];
+    values.splice(index, 1);
+    setFormModified(true);
+    formik.setFieldValue('ingredients', values);
+  };
+
+  const deleteInstruction = (index) => {
+    const values = [...formik.values.instructions];
+    values.splice(index, 1);
+    setFormModified(true);
+    formik.setFieldValue('instructions', values);
   };
 
   const handleIngredientChange = (index, e) => {
     const values = [...formik.values.ingredients];
     values[index] = e.target.value;
+    setFormModified(true);
     formik.setFieldValue('ingredients', values);
   };
 
   const handleInstructionChange = (index, e) => {
     const values = [...formik.values.instructions];
     values[index] = e.target.value;
+    setFormModified(true);
     formik.setFieldValue('instructions', values);
   };
 
@@ -88,7 +117,7 @@ function EditForm(id) {
                 className="input w-full max-w-xs"
                 type="text"
                 name="name"
-                onChange={formik.handleChange}
+                onChange={handleFormChange}
                 value={formik.values.name}
                 required
               />
@@ -99,7 +128,7 @@ function EditForm(id) {
                 className="input w-full max-w-xs"
                 type="text"
                 name="glass"
-                onChange={formik.handleChange}
+                onChange={handleFormChange}
                 value={formik.values.glass}
                 required
               />
@@ -110,7 +139,7 @@ function EditForm(id) {
                 className="input input w-full max-w-xs"
                 type="text"
                 name="category"
-                onChange={formik.handleChange}
+                onChange={handleFormChange}
                 value={formik.values.category}
                 required
               />
@@ -134,15 +163,24 @@ function EditForm(id) {
                     value={ingredient}
                     required
                   />
+                  {index > 0 && (
+                    <button
+                      type="button"
+                      className="btn"
+                      onClick={() => deleteIngredient(index)}
+                    >
+                      x
+                    </button>
+                  )}
                 </label>
               ))}
             </div>
             <div>
               <label className="label">
                 Cocktail Instructions
-                <span className="btn" onClick={addInstruction}>
+                <div className="btn" onClick={addInstruction}>
                   add
-                </span>
+                </div>
               </label>
               {formik.values.instructions.map((instruction, index) => (
                 <label className="input-group mt-1" key={index}>
@@ -155,6 +193,15 @@ function EditForm(id) {
                     value={instruction}
                     required
                   />
+                  {index > 0 && (
+                    <button
+                      type="button"
+                      className="btn"
+                      onClick={() => deleteInstruction(index)}
+                    >
+                      x
+                    </button>
+                  )}
                 </label>
               ))}
             </div>
@@ -166,6 +213,7 @@ function EditForm(id) {
                 name="image"
                 onChange={(e) => {
                   formik.setFieldValue('image', e.currentTarget.files[0]);
+                  setFormModified(true);
                 }}
                 accept="image/*"
               />
