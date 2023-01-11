@@ -3,12 +3,15 @@ import { useParams, Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function CommentEdit() {
   const [comment, setComment] = useState({});
   const [formModified, setFormModified] = useState(false);
   const { id, cid } = useParams();
   const url = `${process.env.REACT_APP_API_COMMENTS}/${id}`;
+  const adminstate = localStorage.getItem('user');
+  let navigate = useNavigate();
 
   const getComment = () => {
     axios.get(url).then((res) => {
@@ -18,6 +21,9 @@ function CommentEdit() {
   };
   useEffect(() => {
     getComment();
+    if (!adminstate) {
+      navigate('/admin');
+    }
     //eslint-disable-next-line
   }, []);
 
@@ -103,9 +109,9 @@ function CommentEdit() {
           </form>
         </div>
       </div>
-      <div className="btn btn-primary mt-5">
-        <Link to={`/cocktail/${id}`}>Back to cocktail</Link>
-      </div>
+      <Link to={`/cocktail/${id}`}>
+        <div className="btn btn-primary mt-5">Back to cocktail</div>
+      </Link>
     </div>
   );
 }

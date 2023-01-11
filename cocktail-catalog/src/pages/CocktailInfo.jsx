@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useFormik } from 'formik';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import AddComment from '../components/AddComment';
 
 function CocktailInfo() {
   const [cocktail, setCocktail] = useState();
@@ -14,14 +14,6 @@ function CocktailInfo() {
   const handleClick = (e) => {
     navigate(`${e}`);
   };
-
-  const formik = useFormik({
-    initialValues: {
-      text: '',
-      author: '',
-    },
-    onSubmit: async (values) => {},
-  });
 
   useEffect(() => {
     getCocktail();
@@ -137,25 +129,8 @@ function CocktailInfo() {
 
       {comments && (
         <div className="card flex items-center flex-col w-1/2 bg-neutral mt-10 p-10">
-          <form onSubmit={formik.handleSubmit}>
-            <div className="form-name flex flex-col">
-              <label className="label">New comment:</label>
-              <input
-                className="input w-full max-w-xs"
-                type="text"
-                name="text"
-                onChange={formik.handleChange}
-                value={formik.values.text}
-                required
-              />
-            </div>
-            <div className="mt-5">
-              <button className="btn w-full max-w-xs" type="submit">
-                Submit
-              </button>
-            </div>
-          </form>
           <center>
+            <AddComment id={id} setComments={setComments} />
             <h1 className="text-4xl">Comments:</h1>
           </center>
           {comments.length === 0 ? (
