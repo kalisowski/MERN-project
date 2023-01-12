@@ -1,11 +1,11 @@
 {
-  "name": "projektprogramistyczny-kalisowski",
+  "name": "backend",
   "version": "1.0.0",
   "description": "My first MERN app",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "server": "nodemon backend/server.js",
+    "start": "node server.js",
+    "server": "nodemon server.js",
     "client": "npm start --prefix cocktail-catalog"
   },
   "repository": {
