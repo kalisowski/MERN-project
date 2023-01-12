@@ -6,8 +6,9 @@ const {
   deleteComment,
   updateComment,
 } = require('../controllers/commentController');
+const { checkCommentDelay } = require('../middleware/cookieMiddleware');
 
-router.post('/:id', newComment);
+router.post('/:id', checkCommentDelay, newComment);
 router.get('/:id', getComments);
 router.delete('/:id/:commentId', deleteComment);
 router.put('/:id/:commentId', updateComment);
