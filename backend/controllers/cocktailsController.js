@@ -115,7 +115,9 @@ const findCocktail = asyncHandler(async (req, res) => {
 const findCocktailByName = asyncHandler(async (req, res) => {
   const name = req.query.name;
 
-  const cocktail = await Cocktail.find({ name: { $regex: name } }).sort({
+  const cocktail = await Cocktail.find({
+    name: { $regex: name, $options: 'i' },
+  }).sort({
     name: 1,
   });
   if (!cocktail) {
