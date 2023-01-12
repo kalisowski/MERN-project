@@ -15,7 +15,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({ origin: process.env.FRONT_URL, credentials: true }));
+app.use(cors({ credentials: true }));
 app.use(cookieParser());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/cocktails', require('./routes/cocktailsRoutes'));
