@@ -4,7 +4,6 @@ function checkCommentDelay(req, res, next) {
   const lastCommentTime = req.cookies[cookieName];
   if (!lastCommentTime) {
     res.cookie(cookieName, Date.now());
-    console.log('test2');
     next();
   } else {
     const currentTime = Date.now();
