@@ -13,6 +13,7 @@ function AddComment({ id, setComments }) {
     },
     onSubmit: async (values) => {
       try {
+        axios.defaults.withCredentials = true;
         const response = await axios.post(url, values);
         if (response.status === 200) {
           if (response.data.msg) {
@@ -23,8 +24,11 @@ function AddComment({ id, setComments }) {
           setComments(response.data);
         }
       } catch (error) {
-        toast.error('Error adding cocktail');
-        console.log(error);
+        if (error.response.status === 429) {
+          toast.error('You are posting too quickly. Please try again later.');
+        } else {
+          toast.error('Error adding cocktail');
+        }
       }
       formik.resetForm();
     },
