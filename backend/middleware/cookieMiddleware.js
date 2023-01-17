@@ -1,5 +1,5 @@
 function checkCommentDelay(req, res, next) {
-  const delay = 60 * 1000 * 15;
+  const delay = 60 * 1000;
   const cookieName = 'lastCommentTime';
   const lastCommentTime = req.cookies[cookieName];
   if (!lastCommentTime) {
