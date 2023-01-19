@@ -5,6 +5,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import AddComment from '../components/AddComment';
 
 function CocktailInfo() {
+  const [rating, setRating] = useState(0);
   const [cocktail, setCocktail] = useState();
   const [comments, setComments] = useState();
   const adminstate = localStorage.getItem('user');
@@ -18,6 +19,7 @@ function CocktailInfo() {
   useEffect(() => {
     getCocktail();
     getComments();
+    getRating();
     //eslint-disable-next-line
   }, []);
 
@@ -42,6 +44,29 @@ function CocktailInfo() {
       toast.success('Comment deleted!');
       setComments(res.data);
     });
+  };
+
+  const getRating = () => {
+    const url = `${process.env.REACT_APP_API_RATING}/${id}`;
+    axios.get(url).then((res) => {
+      setRating(res.data);
+    });
+  };
+
+  const addRating = async (rating) => {
+    axios.defaults.withCredentials = true;
+    const url = `${process.env.REACT_APP_API_RATING}` + id;
+    axios
+      .post(url, {
+        rating: rating,
+      })
+      .then((res) => {
+        toast.success('Rating added!');
+        setRating(res.data.rating);
+      })
+      .catch((err) => {
+        toast.error('You are rating too often!');
+      });
   };
 
   return (
@@ -89,33 +114,57 @@ function CocktailInfo() {
                     </ul>
                   </div>
                 </div>
-                <div className="rating rating-lg">
-                  <input
-                    type="radio"
-                    name="rating-8"
-                    className="mask mask-star-2 bg-orange-400"
-                  />
-                  <input
-                    type="radio"
-                    name="rating-8"
-                    className="mask mask-star-2 bg-orange-400"
-                  />
-                  <input
-                    type="radio"
-                    name="rating-8"
-                    className="mask mask-star-2 bg-orange-400"
-                  />
-                  <input
-                    type="radio"
-                    name="rating-8"
-                    className="mask mask-star-2 bg-orange-400"
-                  />
-                  <input
-                    type="radio"
-                    name="rating-8"
-                    className="mask mask-star-2 bg-orange-400"
-                  />
+                <div>
+                  <center>
+                    <p className="mb-3">Average rating: {rating.toFixed(2)}</p>
+                  </center>
+
+                  <div className="rating rating-lg">
+                    <input
+                      type="radio"
+                      name="rating-8"
+                      className="mask mask-star-2 bg-orange-400"
+                      selected
+                      onClick={() => {
+                        addRating(1);
+                      }}
+                    />
+                    <input
+                      type="radio"
+                      name="rating-8"
+                      className="mask mask-star-2 bg-orange-400"
+                      onClick={() => {
+                        addRating(2);
+                      }}
+                    />
+                    <input
+                      type="radio"
+                      name="rating-8"
+                      className="mask mask-star-2 bg-orange-400"
+                      onClick={() => {
+                        addRating(3);
+                      }}
+                    />
+                    <input
+                      type="radio"
+                      name="rating-8"
+                      className="mask mask-star-2 bg-orange-400"
+                      onClick={() => {
+                        addRating(4);
+                      }}
+                    />
+                    <input
+                      type="radio"
+                      name="rating-8"
+                      className="mask mask-star-2 bg-orange-400"
+                      onClick={() => {
+                        addRating(5);
+                      }}
+                    />
+                  </div>
                 </div>
+
+                <div className="d-flex"></div>
                 <div>
                   <Link to="/">
                     <button className="btn bg-primary">Take me back!</button>
@@ -131,7 +180,7 @@ function CocktailInfo() {
         <div className="card flex items-center flex-col w-1/2 bg-neutral mt-10 p-10">
           <center>
             <AddComment id={id} setComments={setComments} />
-            <h1 className="text-4xl">Comments:</h1>
+            <h1 className="text-4xl mt-5">Comments:</h1>
           </center>
           {comments.length === 0 ? (
             <p>There are no comments yet!</p>
