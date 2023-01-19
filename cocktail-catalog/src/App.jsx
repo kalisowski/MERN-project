@@ -7,6 +7,7 @@ import CocktailInfo from './pages/CocktailInfo';
 import AdminPage from './pages/AdminPage';
 import AddPage from './pages/AddPage';
 import CommentEdit from './pages/CommentEdit';
+import Stats from './pages/StatsPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/stats" element={<Stats />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/cocktail">
             <Route path=":id">
