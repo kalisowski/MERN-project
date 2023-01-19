@@ -51,6 +51,14 @@ const cocktailSchema = new mongoose.Schema({
     ],
     default: [],
   },
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  ratingsAmount: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model('Cocktail', cocktailSchema);
