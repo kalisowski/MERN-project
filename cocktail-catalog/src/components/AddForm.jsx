@@ -51,6 +51,18 @@ function AddForm() {
     formik.setFieldValue('instructions', [...formik.values.instructions, '']);
   };
 
+  const deleteIngredient = (index) => {
+    const values = [...formik.values.ingredients];
+    values.splice(index, 1);
+    formik.setFieldValue('ingredients', values);
+  };
+
+  const deleteInstruction = (index) => {
+    const values = [...formik.values.instructions];
+    values.splice(index, 1);
+    formik.setFieldValue('instructions', values);
+  };
+
   const handleIngredientChange = (index, e) => {
     const values = [...formik.values.ingredients];
     values[index] = e.target.value;
@@ -120,6 +132,15 @@ function AddForm() {
                   value={ingredient}
                   required
                 />
+                {index > 0 && (
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={() => deleteIngredient(index)}
+                  >
+                    x
+                  </button>
+                )}
               </label>
             ))}
           </div>
@@ -141,6 +162,15 @@ function AddForm() {
                   value={instruction}
                   required
                 />
+                {index > 0 && (
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={() => deleteInstruction(index)}
+                  >
+                    x
+                  </button>
+                )}
               </label>
             ))}
           </div>
