@@ -52,18 +52,25 @@ function NavBar(props) {
   return (
     <div className="navbar bg-primary flex-none flex-wrap">
       <div className="flex-1">
-        <a href="/" className="btn btn-ghost normal-case text-xl flex-initial ">
-          Cocktails
-        </a>
+        <Link to="/">
+          <div className="btn btn-ghost normal-case text-xl flex-initial">
+            Home
+          </div>
+        </Link>
+        <Link to="/stats">
+          <div className="btn btn-ghost normal-case text-xl flex-initial">
+            Stats
+          </div>
+        </Link>
         {admin && (
           <>
             <div className="flex-1">
-              <a
-                href="/add"
+              <Link
+                to="/add"
                 className="btn btn-ghost normal-case text-xl flex-initial "
               >
                 Add new cocktail
-              </a>
+              </Link>
             </div>
           </>
         )}
