@@ -48,7 +48,7 @@ const setCocktail = asyncHandler(async (req, res) => {
       name: req.body.name,
       image:
         req.protocol +
-        's://' +
+        '://' +
         req.get('host') +
         '/uploads/' +
         req.file.filename,
@@ -77,7 +77,7 @@ const updateCocktail = asyncHandler(async (req, res) => {
       }
     });
     cocktail.image =
-      req.protocol + 's://' + req.get('host') + '/uploads/' + req.file.filename;
+      req.protocol + '://' + req.get('host') + '/uploads/' + req.file.filename;
   } else cocktail.image = cocktail.image;
   cocktail.ingredients = req.body.ingredients;
   cocktail.instructions = req.body.instructions;
@@ -127,21 +127,6 @@ const findCocktailByName = asyncHandler(async (req, res) => {
   res.status(200).json(cocktail);
 });
 
-const countAlcoholicCocktails = asyncHandler(async (req, res) => {
-  const count = await Cocktail.countDocuments({ category: 'Alcoholic' });
-  res.status(200).json(count);
-});
-
-const countNonAlcoholicCocktails = asyncHandler(async (req, res) => {
-  const count = await Cocktail.countDocuments({ category: 'Non alcoholic' });
-  res.status(200).json(count);
-});
-
-const countCocktails = asyncHandler(async (req, res) => {
-  const count = await Cocktail.countDocuments();
-  res.status(200).json(count);
-});
-
 module.exports = {
   getCocktails,
   setCocktail,
@@ -149,8 +134,5 @@ module.exports = {
   deleteCocktail,
   findCocktail,
   findCocktailByName,
-  countAlcoholicCocktails,
-  countNonAlcoholicCocktails,
-  countCocktails,
   upload,
 };
