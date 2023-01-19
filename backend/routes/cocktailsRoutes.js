@@ -7,9 +7,6 @@ const {
   deleteCocktail,
   findCocktail,
   findCocktailByName,
-  countAlcoholicCocktails,
-  countNonAlcoholicCocktails,
-  countCocktails,
   upload,
 } = require('../controllers/cocktailsController');
 
@@ -19,9 +16,5 @@ router
   .get(findCocktail)
   .put(upload.single('image'), updateCocktail)
   .delete(deleteCocktail);
-router.route('/count').get(countCocktails);
-router.route('/count-alcoholic').get(countAlcoholicCocktails);
-router.route('/count-non-alcoholic').get(countNonAlcoholicCocktails);
 router.route('/search').get(findCocktailByName);
-
 module.exports = router;
