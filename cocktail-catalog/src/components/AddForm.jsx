@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
 function AddForm() {
+  const inputRef = useRef();
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -89,6 +90,7 @@ function AddForm() {
               onChange={formik.handleChange}
               value={formik.values.name}
               required
+              ref={inputRef}
             />
           </div>
           <div>
@@ -191,7 +193,10 @@ function AddForm() {
             <button
               className="btn w-full max-w-xs"
               type="reset"
-              onClick={formik.resetForm}
+              onClick={() => {
+                formik.resetForm();
+                inputRef.current.focus();
+              }}
             >
               Reset
             </button>
