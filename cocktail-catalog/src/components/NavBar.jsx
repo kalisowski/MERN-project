@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect, useMemo } from 'react';
 import _ from 'underscore';
 import { FiLogOut } from 'react-icons/fi';
 import { AiOutlineClear } from 'react-icons/ai';
@@ -10,6 +10,14 @@ function NavBar(props) {
   const dispatch = useDispatch();
   const { updateCocktails, updateLoadingState, main, admin } = props;
   const [search, setSearch] = useState('');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+  const themes = ['halloween', 'coffee', 'dark'];
+  const themeInLocalStorage = useMemo(() => {
+    localStorage.setItem('theme', theme);
+    return theme;
+  }, [theme]);
+
+  document.querySelector('html').setAttribute('data-theme', theme);
 
   const debouncedSearch = _.debounce(async (controller) => {
     updateLoadingState(true);
@@ -26,7 +34,7 @@ function NavBar(props) {
     updateLoadingState(false);
   }, 500);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const abortController = new AbortController();
     debouncedSearch(abortController);
     return () => {
@@ -47,6 +55,14 @@ function NavBar(props) {
   const logOut = () => {
     dispatch(logoutAdmin());
     dispatch(reset());
+  };
+
+  const changeTheme = () => {
+    const currentIndex = themes.indexOf(themeInLocalStorage);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    const nextTheme = themes[nextIndex];
+    setTheme(nextTheme);
+    document.querySelector('html').setAttribute('data-theme', nextTheme);
   };
 
   return (
@@ -96,6 +112,9 @@ function NavBar(props) {
               <FiLogOut />
             </div>
           )}
+          <div className="btn ml-2" onClick={changeTheme}>
+            Theme
+          </div>
         </div>
       )}
     </div>
