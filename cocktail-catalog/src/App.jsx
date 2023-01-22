@@ -8,6 +8,7 @@ import AdminPage from './pages/AdminPage';
 import AddPage from './pages/AddPage';
 import CommentEdit from './pages/CommentEdit';
 import Stats from './pages/StatsPage';
+import ImportPage from './pages/ImportPage';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           </Route>
           <Route path="/edit/:id" element={<AddPage />} />
           <Route path="/add" element={<AddPage />} />
+          <Route path="/import" element={<ImportPage />} />
         </Routes>
       </Router>
       <ToastContainer />
