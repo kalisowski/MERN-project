@@ -8,18 +8,18 @@ import { useNavigate } from 'react-router-dom';
 function ImportPage() {
   const navigate = useNavigate();
   const adminstate = localStorage.getItem('user');
-
-  useEffect(() => {
-    if (!adminstate) {
-      navigate('/admin');
-    }
-  }, [adminstate, navigate]);
   const fileInputRef = useRef(null);
   const singleFileInputRef = useRef(null);
   const [data, setData] = useState([]);
   const [importData, setImportData] = useState(null);
   const [singleData, setSingleData] = useState(null);
   const [fileError, setFileError] = useState(null);
+
+  useEffect(() => {
+    if (!adminstate) {
+      navigate('/admin');
+    }
+  }, [adminstate, navigate]);
 
   const getCocktails = async () => {
     const res = await axios.get(process.env.REACT_APP_API_COCKTAILS);
@@ -154,45 +154,52 @@ function ImportPage() {
   return (
     <div className="flex flex-col flex-wrap items-center justify-center h-screen">
       <div className="flex flex-col jusify-center items-center">
-        <div>
-          <label className="label">Import data</label>
-          <input
-            ref={singleFileInputRef}
-            className="file-input file-input input-primary w-full max-w-xs"
-            type="file"
-            name="file"
-            id="file"
-            onChange={(e) => {
-              handleFile(e);
-            }}
-          />
-          <button type="button" className="btn ml-2" onClick={handleImport}>
+        <div className="flex">
+          <div>
+            <label className="label">Import data</label>
+            <input
+              ref={singleFileInputRef}
+              className="file-input file-input input-primary w-full max-w-xs"
+              type="file"
+              name="file"
+              id="file"
+              onChange={(e) => {
+                handleFile(e);
+              }}
+            />
+          </div>
+          <button
+            type="button"
+            className="btn ml-2 mt-10"
+            onClick={handleImport}
+          >
             Import
           </button>
         </div>
-        <div>
-          <label className="label">Import single cocktail</label>
-          <input
-            ref={fileInputRef}
-            className="file-input file-input input-primary w-full max-w-xs"
-            type="file"
-            name="file2"
-            id="file2"
-            onChange={(e) => {
-              handleFileSingle(e);
-            }}
-          />
+        <div className="flex">
+          <div>
+            <label className="label">Add single cocktail</label>
+            <input
+              ref={fileInputRef}
+              className="file-input file-input input-primary w-full max-w-xs"
+              type="file"
+              name="file2"
+              id="file2"
+              onChange={(e) => {
+                handleFileSingle(e);
+              }}
+            />
+          </div>
           <button
             type="button"
-            className="btn ml-2"
+            className="btn ml-2 mt-10"
             onClick={handleImportSingle}
           >
             Import
           </button>
-          {fileError && <div className="text-red-500">{fileError}</div>}
         </div>
+        {fileError && <div className="text-red-500">{fileError}</div>}
       </div>
-
       <button className="btn mt-10" onClick={handleExport}>
         Export Data
       </button>
