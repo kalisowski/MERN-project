@@ -35,11 +35,12 @@ const setCocktail = asyncHandler(async (req, res) => {
   const existingCocktail = await Cocktail.findOne({ name: req.body.name });
   if (existingCocktail) {
     const fileName = path.basename(req.file.filename);
-    fs.unlink(path.join(__dirname, '../uploads', fileName), (err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
+    if (fileName !== 'placeholder.jpg')
+      fs.unlink(path.join(__dirname, '../uploads', fileName), (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
     return res
       .status(409)
       .json({ msg: 'Cocktail with the same name already exists' });
@@ -71,11 +72,12 @@ const updateCocktail = asyncHandler(async (req, res) => {
   cocktail.name = req.body.name;
   if (req.file) {
     const fileName = path.basename(cocktail.image);
-    fs.unlink(path.join(__dirname, '../uploads', fileName), (err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
+    if (fileName !== 'placeholder.jpg')
+      fs.unlink(path.join(__dirname, '../uploads', fileName), (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
     cocktail.image =
       req.protocol + 's://' + req.get('host') + '/uploads/' + req.file.filename;
   } else cocktail.image = cocktail.image;
@@ -94,11 +96,12 @@ const deleteCocktail = asyncHandler(async (req, res) => {
     throw new Error('Nie ma takiego koktajlu');
   }
   const fileName = path.basename(cocktail.image);
-  fs.unlink(path.join(__dirname, '../uploads', fileName), (err) => {
-    if (err) {
-      console.error(err);
-    }
-  });
+  if (fileName !== 'placeholder.jpg')
+    fs.unlink(path.join(__dirname, '../uploads', fileName), (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
   cocktail.remove();
   res.status(200).json({ message: 'Koktajl usunięty' });
 });
