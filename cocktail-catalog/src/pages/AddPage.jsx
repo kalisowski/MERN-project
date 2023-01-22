@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import AddForm from '../components/AddForm';
 import EditForm from '../components/EditForm';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function AddPage() {
@@ -25,6 +24,13 @@ function AddPage() {
           <Link to="/">
             <button className="btn bg-primary">Take me back!</button>
           </Link>
+          {!id ? (
+            <Link to="/import">
+              <button className="btn bg-secondary ml-5">
+                Import from file
+              </button>
+            </Link>
+          ) : null}
         </div>
       </div>
     </>
