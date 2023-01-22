@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
 function AddForm() {
+  const inputRef = useRef();
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -51,6 +52,18 @@ function AddForm() {
     formik.setFieldValue('instructions', [...formik.values.instructions, '']);
   };
 
+  const deleteIngredient = (index) => {
+    const values = [...formik.values.ingredients];
+    values.splice(index, 1);
+    formik.setFieldValue('ingredients', values);
+  };
+
+  const deleteInstruction = (index) => {
+    const values = [...formik.values.instructions];
+    values.splice(index, 1);
+    formik.setFieldValue('instructions', values);
+  };
+
   const handleIngredientChange = (index, e) => {
     const values = [...formik.values.ingredients];
     values[index] = e.target.value;
@@ -77,6 +90,7 @@ function AddForm() {
               onChange={formik.handleChange}
               value={formik.values.name}
               required
+              ref={inputRef}
             />
           </div>
           <div>
@@ -120,6 +134,15 @@ function AddForm() {
                   value={ingredient}
                   required
                 />
+                {index > 0 && (
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={() => deleteIngredient(index)}
+                  >
+                    x
+                  </button>
+                )}
               </label>
             ))}
           </div>
@@ -141,6 +164,15 @@ function AddForm() {
                   value={instruction}
                   required
                 />
+                {index > 0 && (
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={() => deleteInstruction(index)}
+                  >
+                    x
+                  </button>
+                )}
               </label>
             ))}
           </div>
@@ -161,7 +193,10 @@ function AddForm() {
             <button
               className="btn w-full max-w-xs"
               type="reset"
-              onClick={formik.resetForm}
+              onClick={() => {
+                formik.resetForm();
+                inputRef.current.focus();
+              }}
             >
               Reset
             </button>

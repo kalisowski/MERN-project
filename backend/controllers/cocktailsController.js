@@ -127,19 +127,19 @@ const findCocktailByName = asyncHandler(async (req, res) => {
   res.status(200).json(cocktail);
 });
 
-const countAlcoholicCocktails = asyncHandler(async (req, res) => {
-  const count = await Cocktail.countDocuments({ category: 'Alcoholic' });
-  res.status(200).json(count);
+const newCocktailsFromJson = asyncHandler(async (req, res) => {
+  const cocktails = await Cocktail.insertMany(req.body);
+  res.status(200).json(cocktails);
 });
 
-const countNonAlcoholicCocktails = asyncHandler(async (req, res) => {
-  const count = await Cocktail.countDocuments({ category: 'Non alcoholic' });
-  res.status(200).json(count);
+const clearCocktails = asyncHandler(async (req, res) => {
+  await Cocktail.deleteMany({});
+  res.status(200).json({ message: 'Wyczyszczono bazę' });
 });
 
-const countCocktails = asyncHandler(async (req, res) => {
-  const count = await Cocktail.countDocuments();
-  res.status(200).json(count);
+const singleCocktailFromJson = asyncHandler(async (req, res) => {
+  const cocktail = await Cocktail.create(req.body);
+  res.status(200).json(cocktail);
 });
 
 module.exports = {
@@ -149,8 +149,8 @@ module.exports = {
   deleteCocktail,
   findCocktail,
   findCocktailByName,
-  countAlcoholicCocktails,
-  countNonAlcoholicCocktails,
-  countCocktails,
+  newCocktailsFromJson,
+  clearCocktails,
+  singleCocktailFromJson,
   upload,
 };

@@ -4,6 +4,7 @@ import axios from 'axios';
 import cocktailContext from '../contexts/cocktailContext';
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 function Card({ id, name, image, category, admin }) {
   const { cocktails, setCocktails } = useContext(cocktailContext);
@@ -49,9 +50,9 @@ function Card({ id, name, image, category, admin }) {
                 Delete
               </button>
 
-              <a href={`/edit/${id}`}>
+              <Link to={`/edit/${id}`}>
                 <button className="btn btn-accent">Edit</button>
-              </a>
+              </Link>
             </>
           )}
           <button className="btn btn-primary" onClick={handleClick}>

@@ -21,6 +21,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/cocktails', require('./routes/cocktailsRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/comments', require('./routes/commentsRoutes'));
+app.use('/api/rating', require('./routes/ratingRoutes'));
+app.use('/api/stats', require('./routes/statsRoutes'));
 
 app.use(errorHandler);
 
