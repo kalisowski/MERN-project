@@ -1,5 +1,5 @@
 function checkCommentDelay(req, res, next) {
-  const delay = 60 * 10;
+  const delay = 60 * 1000;
   const cookieName = 'lastCommentTime';
   const lastCommentTime = req.cookies[cookieName];
   if (!lastCommentTime) {
@@ -21,7 +21,7 @@ function checkCommentDelay(req, res, next) {
 }
 
 function checkRatingDelay(req, res, next) {
-  const delay = 60 * 10;
+  const delay = 60 * 1000;
   const cookieName = 'lastRatingTime';
   const lastRatingTime = req.cookies[cookieName];
   if (!lastRatingTime) {
