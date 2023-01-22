@@ -26,14 +26,27 @@ function Stats() {
         process.env.REACT_APP_API_STATS + 'count-category'
       );
       setCocktailStats(response.data[0]);
+
+      const sortedCategories = response.data[0].categories.sort(
+        (a, b) => b.count - a.count
+      );
+      const topFiveCategories = sortedCategories.slice(0, 5);
+      const otherCategory = {
+        category: 'Other',
+        count: sortedCategories
+          .slice(5)
+          .reduce((acc, cur) => acc + cur.count, 0),
+      };
+      const data = [...topFiveCategories];
+      if (otherCategory.count > 0) {
+        data.push(otherCategory);
+      }
       setCategoryChartData({
-        labels: response.data[0].categories.map(
-          (category) => category.category
-        ),
+        labels: data.map((category) => category.category),
         datasets: [
           {
             label: 'Cocktails in Category',
-            data: response.data[0].categories.map((category) => category.count),
+            data: data.map((category) => category.count),
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
@@ -71,16 +84,26 @@ function Stats() {
         process.env.REACT_APP_API_STATS + 'count-comments'
       );
       setCommentStats(response.data);
+      const sortedCocktails = response.data.commentsByCocktail.sort(
+        (a, b) => b.count - a.count
+      );
+      const topFiveCocktails = sortedCocktails.slice(0, 5);
+      const otherCocktail = {
+        _id: 'Other',
+        count: sortedCocktails
+          .slice(5)
+          .reduce((acc, cur) => acc + cur.count, 0),
+      };
+      const data = [...topFiveCocktails];
+      if (otherCocktail.count > 0) {
+        data.push(otherCocktail);
+      }
       setCommentsChartData({
-        labels: response.data.commentsByCocktail.map(
-          (cocktail) => cocktail._id
-        ),
+        labels: data.map((cocktail) => cocktail._id),
         datasets: [
           {
             label: 'Comments by Cocktail',
-            data: response.data.commentsByCocktail.map(
-              (cocktail) => cocktail.count
-            ),
+            data: data.map((cocktail) => cocktail.count),
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
@@ -127,10 +150,10 @@ function Stats() {
       ) : error ? (
         <div className="text-red-500">{error.message}</div>
       ) : cocktailStats.categories && commentStats ? (
-        <div className="mockup-window border bg-base-300 w-1/3">
-          <div className="flex flex-col justify-center px-4 py-16 bg-neutral">
+        <div className="mockup-window border bg-base-300">
+          <div className="flex flex-col justify-center px-4 py-10 bg-neutral">
             <div className="flex flex-row justify-center">
-              <div className="stats shadow-xl m-5">
+              <div className="stats shadow-xl ml-10 my-5">
                 <div className="stat">
                   <div className="stat-title">Total cocktails in database:</div>
                   <div className="stat-value">
@@ -138,7 +161,7 @@ function Stats() {
                   </div>
                 </div>
               </div>
-              <div className="stats shadow-xl m-5">
+              <div className="stats shadow-xl ml-2 my-5">
                 <div className="stat">
                   <div className="stat-title">Total comments in database:</div>
                   <div className="stat-value">
@@ -148,9 +171,9 @@ function Stats() {
               </div>
             </div>
             <div className="flex flex-row justify-evenly">
-              <div className="overflow-x-auto">
-                <div className="overflow-x-auto overflow-y-auto shadow-xl mt-5">
-                  <table className="table w-full">
+              <div className="flex">
+                <div className="overflow-y-auto h-80 w-96">
+                  <table className="table">
                     <thead>
                       <tr>
                         <th>Comments:</th>
@@ -169,8 +192,8 @@ function Stats() {
                     </tbody>
                   </table>
                 </div>
-                <div>
-                  <table className="table w-80 h-80 mt-10">
+                <div className="overflow-y-auto h-80 w-96 ml-2">
+                  <table className="table">
                     <thead>
                       <tr>
                         <th>Categories:</th>
