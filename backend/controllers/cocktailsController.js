@@ -127,6 +127,21 @@ const findCocktailByName = asyncHandler(async (req, res) => {
   res.status(200).json(cocktail);
 });
 
+const newCocktailsFromJson = asyncHandler(async (req, res) => {
+  const cocktails = await Cocktail.insertMany(req.body);
+  res.status(200).json(cocktails);
+});
+
+const clearCocktails = asyncHandler(async (req, res) => {
+  await Cocktail.deleteMany({});
+  res.status(200).json({ message: 'Wyczyszczono bazę' });
+});
+
+const singleCocktailFromJson = asyncHandler(async (req, res) => {
+  const cocktail = await Cocktail.create(req.body);
+  res.status(200).json(cocktail);
+});
+
 module.exports = {
   getCocktails,
   setCocktail,
@@ -134,5 +149,8 @@ module.exports = {
   deleteCocktail,
   findCocktail,
   findCocktailByName,
+  newCocktailsFromJson,
+  clearCocktails,
+  singleCocktailFromJson,
   upload,
 };
