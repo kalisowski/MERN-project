@@ -48,7 +48,7 @@ const setCocktail = asyncHandler(async (req, res) => {
       name: req.body.name,
       image:
         req.protocol +
-        '://' +
+        's://' +
         req.get('host') +
         '/uploads/' +
         req.file.filename,
@@ -77,7 +77,7 @@ const updateCocktail = asyncHandler(async (req, res) => {
       }
     });
     cocktail.image =
-      req.protocol + '://' + req.get('host') + '/uploads/' + req.file.filename;
+      req.protocol + 's://' + req.get('host') + '/uploads/' + req.file.filename;
   } else cocktail.image = cocktail.image;
   cocktail.ingredients = req.body.ingredients;
   cocktail.instructions = req.body.instructions;
@@ -115,7 +115,9 @@ const findCocktail = asyncHandler(async (req, res) => {
 const findCocktailByName = asyncHandler(async (req, res) => {
   const name = req.query.name;
 
-  const cocktail = await Cocktail.find({ name: { $regex: name } }).sort({
+  const cocktail = await Cocktail.find({
+    name: { $regex: name, $options: 'i' },
+  }).sort({
     name: 1,
   });
   if (!cocktail) {

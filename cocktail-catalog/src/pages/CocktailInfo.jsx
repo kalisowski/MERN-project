@@ -77,7 +77,7 @@ function CocktailInfo() {
               <div className="flex items-center justify-evenly">
                 <div className="card w-60 bg-primary shadow-xl m-5">
                   <div className="card-body">
-                    <h1 className="text-3xl">Ingridients:</h1>
+                    <h1 className="text-3xl">Ingredients:</h1>
                     <ul>
                       {cocktail.ingredients.map((ingredient, id) => {
                         return (
