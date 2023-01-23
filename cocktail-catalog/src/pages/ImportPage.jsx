@@ -83,18 +83,10 @@ function ImportPage() {
         }
         const cocktailsdata = data.cocktails.map((cocktail) => {
           let imagePath = cocktail.image;
-          let path = imagePath.split('/');
-          path[path.length - 2] = 'placeholder';
-          path[path.length - 1] = 'placeholder.jpg';
-          let newImagePath = path.join('/');
+          let newImagePath = imagePath.replace(/[^/]*$/, 'placeholder.jpg');
           return {
-            _id: cocktail._id,
-            name: cocktail.name,
-            ingredients: cocktail.ingredients,
-            instructions: cocktail.instructions,
+            ...cocktail,
             image: newImagePath,
-            category: cocktail.category,
-            glass: cocktail.glass,
           };
         });
         setSingleData(cocktailsdata);
