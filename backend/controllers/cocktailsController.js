@@ -49,7 +49,7 @@ const setCocktail = asyncHandler(async (req, res) => {
       name: req.body.name,
       image:
         req.protocol +
-        's://' +
+        '://' +
         req.get('host') +
         '/uploads/' +
         req.file.filename,
@@ -79,7 +79,7 @@ const updateCocktail = asyncHandler(async (req, res) => {
         }
       });
     cocktail.image =
-      req.protocol + 's://' + req.get('host') + '/uploads/' + req.file.filename;
+      req.protocol + '://' + req.get('host') + '/uploads/' + req.file.filename;
   } else cocktail.image = cocktail.image;
   cocktail.ingredients = req.body.ingredients;
   cocktail.instructions = req.body.instructions;

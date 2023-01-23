@@ -46,6 +46,7 @@ function AddComment({ id, setComments }) {
             onChange={formik.handleChange}
             value={formik.values.author}
             required
+            maxlength="16"
           />
         </div>
         <div className="flex flex-col items-center ml-3">
@@ -57,6 +58,7 @@ function AddComment({ id, setComments }) {
             onChange={formik.handleChange}
             value={formik.values.text}
             required
+            maxlength="100"
           />
         </div>
         <div className="flex items-center ml-3 mt-10">

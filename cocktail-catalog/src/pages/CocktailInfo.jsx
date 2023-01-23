@@ -194,7 +194,9 @@ function CocktailInfo() {
                         Comment: {comment.comment}
                       </h1>
                       <p className="text-l">Author: {comment.author}</p>
-                      <p className="p-2 text-l bg-neutral">{comment.text}</p>
+                      <p className="p-2 text-l bg-neutral break-all">
+                        {comment.text}
+                      </p>
                     </div>
                   </div>
                   <div className="h-max ">
