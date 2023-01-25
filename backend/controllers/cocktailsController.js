@@ -145,6 +145,33 @@ const singleCocktailFromJson = asyncHandler(async (req, res) => {
   res.status(200).json(cocktail);
 });
 
+const findQuery = asyncHandler(async (req, res) => {
+  const query = {};
+  if (req.query.category) query.category = req.query.category;
+  if (req.query.ingredients) {
+    const ingredients = req.query.ingredients.split(',');
+    query.$and = ingredients.map((ingredient) => ({
+      ingredients: { $regex: new RegExp(ingredient, 'i') },
+    }));
+  }
+  if (req.query.rating) query.rating = { $gt: req.query.rating };
+  if (req.query.author) query['comments.author'] = req.query.author;
+  if (req.query.date)
+    query['comments.createdAt'] = { $gt: new Date(req.query.date) };
+
+  Cocktail.find(query)
+    .sort({ rating: -1 })
+    .select('name category rating ingredients')
+    .limit(10)
+    .exec((err, cocktails) => {
+      if (err) {
+        res.status(500).json(err);
+      } else {
+        res.status(200).json(cocktails);
+      }
+    });
+});
+
 module.exports = {
   getCocktails,
   setCocktail,
@@ -155,5 +182,6 @@ module.exports = {
   newCocktailsFromJson,
   clearCocktails,
   singleCocktailFromJson,
+  findQuery,
   upload,
 };

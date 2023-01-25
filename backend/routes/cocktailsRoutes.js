@@ -10,8 +10,10 @@ const {
   newCocktailsFromJson,
   upload,
   clearCocktails,
+  findQuery,
 } = require('../controllers/cocktailsController');
 
+router.route('/find/').get(findQuery);
 router.route('/').get(getCocktails).post(upload.single('image'), setCocktail);
 router
   .route('/cocktail/:id')
